@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #define MAXAV 2000
 #define MAXNOME 100
+#define MAX 2200
+
+//Continuar consultanome, fazer primeiro com o primeiro em comum, depois procurar fazer com buscas mais específicas.
 
 typedef struct{
     char nome[MAXNOME];
@@ -24,8 +27,10 @@ void registralivro(midia conteudo);
 void registrafilme(midia conteudo);
 void registraserie(midia conteudo);
 void registrajogo(midia conteudo);
+void listacategoria();
+void consultanome();
 
-int main() {
+int main(){
 
     int opcoes;
     midia conteudo;
@@ -45,9 +50,9 @@ int main() {
         }else if(opcoes == 4){
             registrajogo(conteudo);
         }else if(opcoes == 5){
-            //listacategoria();
+            listacategoria();
         }else if(opcoes == 6){
-            //consultanome();
+            consultanome();
         }else if(opcoes == 7){
             //excluimidia();
         }else if(opcoes == 8){
@@ -223,8 +228,7 @@ void registralivro(midia conteudo){
                 printf("Leu ate que parte?(num da pag): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -234,7 +238,7 @@ void registralivro(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(livros, 0, SEEK_END);
-                fprintf(livros,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(livros,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                 , conteudo.nota_d, conteudo.parte_i);
                 printf("Livro %s registrado com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -250,15 +254,13 @@ void registralivro(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
                 printf("Ele tem quantas paginas no total?: ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -268,7 +270,7 @@ void registralivro(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(livros, 0, SEEK_END);
-                fprintf(livros,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(livros,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("Livro %s registrado com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -313,15 +315,13 @@ void registrafilme(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
                 printf("Viu ate que parte?(minutos): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             conteudo.nota_d = strtol(conteudo.parte, &ptr, 10);
             do{
@@ -332,7 +332,7 @@ void registrafilme(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(filmes, 0, SEEK_END);
-                fprintf(filmes,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(filmes,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("%s registrado com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -348,15 +348,13 @@ void registrafilme(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
                 printf("Ele tem quantos minutos?: ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -366,7 +364,7 @@ void registrafilme(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(filmes, 0, SEEK_END);
-                fprintf(filmes,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(filmes,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("%s registrado com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -411,15 +409,13 @@ void registraserie(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
                 printf("Viu ate que ep?(conte todos os eps ate o atual): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -429,7 +425,7 @@ void registraserie(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(series, 0, SEEK_END);
-                fprintf(series,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(series,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("%s registrada com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -445,15 +441,13 @@ void registraserie(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
                 printf("Quantos eps no total?: ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -463,7 +457,7 @@ void registraserie(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(series, 0, SEEK_END);
-                fprintf(series,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(series,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("%s registrada com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -508,7 +502,6 @@ void registrajogo(midia conteudo){
                 printf("Qual nota daria?(0.0-10.0): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.nota);
-                strupr(conteudo.nota);
                 conteudo.nota_d = strtod(conteudo.nota, &ptr);
             }while(verificanota(conteudo)==false);
             do{
@@ -516,8 +509,7 @@ void registrajogo(midia conteudo){
                        "\n(ex.:ferro = 0, bronze = 1): ");
                 fflush(stdin);
                 scanf("%[^\n]s", conteudo.parte);
-                strupr(conteudo.parte);
-                conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
             }while(verificatamanho(conteudo)==false);
             do{
                 printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -527,7 +519,7 @@ void registrajogo(midia conteudo){
             }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
             if(strcmp(opcao, "S") == 0){
                 fseek(jogos, 0, SEEK_END);
-                fprintf(jogos,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                fprintf(jogos,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                         , conteudo.nota_d, conteudo.parte_i);
                 printf("%s registrado com sucesso!\n\n", conteudo.nome);
             }else if(strcmp(opcao, "N") == 0){
@@ -550,15 +542,13 @@ void registrajogo(midia conteudo){
                     printf("Qual nota daria?(0.0-10.0): ");
                     fflush(stdin);
                     scanf("%[^\n]s", conteudo.nota);
-                    strupr(conteudo.nota);
                     conteudo.nota_d = strtod(conteudo.nota, &ptr);
                 }while(verificanota(conteudo)==false);
                 do{
                     printf("Ja passou por quantas fases?: ");
                     fflush(stdin);
                     scanf("%[^\n]s", conteudo.parte);
-                    strupr(conteudo.parte);
-                    conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                    conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
                 }while(verificatamanho(conteudo)==false);
                 do{
                     printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -568,7 +558,7 @@ void registrajogo(midia conteudo){
                 }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
                 if(strcmp(opcao, "S") == 0){
                     fseek(jogos, 0, SEEK_END);
-                    fprintf(jogos,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                    fprintf(jogos,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                             , conteudo.nota_d, conteudo.parte_i);
                     printf("%s registrado com sucesso!\n\n", conteudo.nome);
                 }else if(strcmp(opcao, "N") == 0){
@@ -584,15 +574,13 @@ void registrajogo(midia conteudo){
                     printf("Qual nota daria?(0.0-10.0): ");
                     fflush(stdin);
                     scanf("%[^\n]s", conteudo.nota);
-                    strupr(conteudo.nota);
                     conteudo.nota_d = strtod(conteudo.nota, &ptr);
                 }while(verificanota(conteudo)==false);
                 do{
                     printf("O jogo tem quantas fases na campanha principal?: ");
                     fflush(stdin);
                     scanf("%[^\n]s", conteudo.parte);
-                    strupr(conteudo.parte);
-                    conteudo.parte_i = strtol(conteudo.parte, &ptr, 10);
+                    conteudo.parte_i = strtol(conteudo.parte, &ptr, 1000);
                 }while(verificatamanho(conteudo)==false);
                 do{
                     printf("Deseja mesmo registrar %s?(S/N): ", conteudo.nome);
@@ -602,7 +590,7 @@ void registrajogo(midia conteudo){
                 }while(strcmp(opcao, "N") != 0 && strcmp(opcao, "S") != 0);
                 if(strcmp(opcao, "S") == 0){
                     fseek(jogos, 0, SEEK_END);
-                    fprintf(jogos,"%s; %s; %.1lf; %d\n", conteudo.nome, conteudo.avaliacao
+                    fprintf(jogos,"%s;%s;%.1lf;%d\n", conteudo.nome, conteudo.avaliacao
                             , conteudo.nota_d, conteudo.parte_i);
                     printf("%s registrado com sucesso!\n\n", conteudo.nome);
                 }else if(strcmp(opcao, "N") == 0){
@@ -615,4 +603,142 @@ void registrajogo(midia conteudo){
     }
 
     fclose(jogos);
+}
+
+//--------Lista Categoria--------------------------------------------------------------------------------------
+void listacategoria(){
+    FILE *midia;
+    char opcao[2];
+    int opcai;
+    char *ptr, *token;
+    char avaliacao[MAX];
+    int i;
+
+    do{
+        printf("\nSelecione a opcao para listagem:\n");
+        printf("1-Livros\n2-Filmes\n3-Series\n4-Jogos\n");
+        fflush(stdin);
+        scanf("%[^\n]", opcao);
+        opcai = strtol(opcao, &ptr, 10);
+    }while((opcai!=1)&&(opcai!=2)&&(opcai!=3)&&(opcai!=4));
+
+    system("cls");
+    if(opcai == 1){
+        midia = fopen("livros.txt", "a+b");
+        if(midia){
+            printf("Seguem todos os livros registrados e suas informacoes: \n\n");
+            while(fgets(avaliacao, MAX, midia)){
+                token = strtok(avaliacao, ";");
+                i = 0;
+                while(token != NULL){
+                    if(i == 0){
+                        printf("Livro: ");
+                    }else if(i == 1){
+                        printf("Avaliacao: ");
+                    }else if(i == 2){
+                        printf("Nota: ");
+                    }else if(i == 3){
+                        printf("Paginas lidas ou totais: ");
+                    }
+                    printf("%s\n", token);
+                    token = strtok(NULL, ";");
+                    i++;
+                }
+            }
+        }else{
+            printf("Nao foi possivel abrir o arquivo de livros.\n");
+        }
+    }else if(opcai == 2){
+        midia = fopen("filmes.txt", "a+b");
+        if(midia){
+            printf("Seguem todos os filmes registrados e suas informacoes: \n\n");
+            while(fgets(avaliacao, MAX, midia)){
+                token = strtok(avaliacao, ";");
+                i = 0;
+                while(token != NULL){
+                    if(i == 0){
+                        printf("Filme: ");
+                    }else if(i == 1){
+                        printf("Avaliacao: ");
+                    }else if(i == 2){
+                        printf("Nota: ");
+                    }else if(i == 3){
+                        printf("Minutos totais: ");
+                    }
+                    printf("%s\n", token);
+                    token = strtok(NULL, ";");
+                    i++;
+                }
+            }
+        }else{
+            printf("Nao foi possivel abrir o arquivo de filmes.\n");
+        }
+    }else if(opcai == 3){
+        midia = fopen("series.txt", "a+b");
+        if(midia){
+            printf("Seguem todos as series registradas e suas informacoes: \n\n");
+            while(fgets(avaliacao, MAX, midia)){
+                token = strtok(avaliacao, ";");
+                i = 0;
+                while(token != NULL){
+                    if(i == 0){
+                        printf("Serie: ");
+                    }else if(i == 1){
+                        printf("Avaliacao: ");
+                    }else if(i == 2){
+                        printf("Nota: ");
+                    }else if(i == 3){
+                        printf("Episodios vistos ou totais: ");
+                    }
+                    printf("%s\n", token);
+                    token = strtok(NULL, ";");
+                    i++;
+                }
+            }
+        }else{
+            printf("Nao foi possivel abrir o arquivo de series.\n");
+        }
+    }else if(opcai == 4){
+        midia = fopen("jogos.txt", "a+b");
+        if(midia){
+            printf("Seguem todos os jogos registrados e suas informacoes: \n\n");
+            while(fgets(avaliacao, MAX, midia)){
+                token = strtok(avaliacao, ";");
+                i = 0;
+                while(token != NULL){
+                    if(i == 0){
+                        printf("Jogo: ");
+                    }else if(i == 1){
+                        printf("Avaliacao: ");
+                    }else if(i == 2){
+                        printf("Nota: ");
+                    }else if(i == 3){
+                        printf("Ranking/fases concluídas ou totais: ");
+                    }
+                    printf("%s\n", token);
+                    token = strtok(NULL, ";");
+                    i++;
+                }
+            }
+        }else{
+            printf("Nao foi possivel abrir o arquivo de jogos.\n");
+        }
+    }
+}
+
+//--------Consulta Nome----------------------------------------------------------------------------------------
+void consultanome(){
+    FILE *midia;
+    char opcao[2];
+    char *ptr;
+    int opcai;
+
+    do{
+        printf("\nSelecione a opcao para consulta:\n");
+        printf("1-Livro\n2-Filme\n3-Serie\n4-Jogo\n");
+        fflush(stdin);
+        scanf("%[^\n]", opcao);
+        opcai = strtol(opcao, &ptr, 10);
+    }while((opcai!=1)&&(opcai!=2)&&(opcai!=3)&&(opcai!=4));
+
 }
